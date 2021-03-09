@@ -1,2 +1,6 @@
 [Hybrid-Analysis]
 api-key = key
+
+[VirusShare]
+username = username
+password = password
