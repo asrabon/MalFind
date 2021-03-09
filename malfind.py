@@ -8,15 +8,21 @@ import click
 # Local Python Imports
 import malware_bazaar
 import hybrid_analysis
+import virus_share
 
 
 API_KEY_REQUIRED = [
     "Hybrid-Analysis"
 ]
 
+LOGIN_REQUIRED = [
+    "VirusShare"
+]
+
 SEARCH_FUNCTIONS = [
     ("Hybrid-Analysis", hybrid_analysis.search),
     ("Malware Bazaar", malware_bazaar.search),
+    ("VirusShare", virus_share.search)
 ]
 
 CONFIG_FILE = os.path.join("./", "config.ini")
@@ -47,11 +53,19 @@ def search(hash):
             else:
                 logging.warning(f"Unable to search {source} no config file loaded...")
                 continue
+        elif source in LOGIN_REQUIRED:
+            if config:
+                username, password = config[source]["username"], config[source]["password"]
+            else:
+                logging.warning(f"Unable to search {source} no config file loaded...")
+                continue
 
         click.echo(f"Searching {source} for {hash}...")
         try:
             if source in API_KEY_REQUIRED:
                 urls = source_func(hash, api_key)
+            elif source in LOGIN_REQUIRED:
+                urls = source_func(hash, username, password)
             else:
                 urls = source_func(hash)
 
