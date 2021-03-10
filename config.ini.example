@@ -1,6 +1,9 @@
 [Hybrid-Analysis]
 api-key = key
 
+[MalShare]
+api-key = key
+
 [VirusShare]
 username = username
 password = password

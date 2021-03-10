@@ -1,4 +1,3 @@
-from configparser import ConfigParser
 import logging
 import os
 import string
@@ -6,13 +5,18 @@ import string
 import click
 
 # Local Python Imports
-import malware_bazaar
 import hybrid_analysis
+import malshare
+import malquarium
+import malware_bazaar
 import virus_share
+
+from util import load_config
 
 
 API_KEY_REQUIRED = [
-    "Hybrid-Analysis"
+    "Hybrid-Analysis",
+    "MalShare"
 ]
 
 LOGIN_REQUIRED = [
@@ -22,10 +26,10 @@ LOGIN_REQUIRED = [
 SEARCH_FUNCTIONS = [
     ("Hybrid-Analysis", hybrid_analysis.search),
     ("Malware Bazaar", malware_bazaar.search),
-    ("VirusShare", virus_share.search)
+    ("VirusShare", virus_share.search),
+    ("Malquarium", malquarium.search),
+    ("MalShare", malshare.search),
 ]
-
-CONFIG_FILE = os.path.join("./", "config.ini")
 
 
 @click.command()
@@ -35,16 +39,7 @@ def search(hash):
         click.echo("File hash entered is invalid. Please enter an MD5, SHA1, or SHA256 hash.")
     
     # Load config file if available
-    config = None
-    if os.path.exists(CONFIG_FILE):
-        try:
-            config = ConfigParser()
-            config.read(CONFIG_FILE)
-        except Exception as e:
-            config = None
-            logging.error(f"Unable to load config file: {e}")
-    else:
-        logging.warning(f"Config file does not exist please modify config.ini.example with your information to get the full benefits of the application")
+    config = load_config()
     
     for source, source_func in SEARCH_FUNCTIONS:
         if source in API_KEY_REQUIRED:
