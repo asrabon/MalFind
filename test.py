@@ -1,11 +1,5 @@
 # Local Python Imports
-import hybrid_analysis
-import malshare
-import malquarium
-import malware_bazaar
-import polyswarm
-import virus_share
-
+from sources import *
 from util import load_config
 
 
@@ -47,6 +41,24 @@ def test_malware_bazaar():
 
 def test_polyswarm():
     urls = polyswarm.search("93260b51c4c5a7e05cd398e08af3abaf7aa68c90")
+
+    assert urls is not None
+
+
+def test_triage():
+    urls = triage.search("e9ace713ab91787638a875a72ed8ebd671012bf5")
+
+    assert urls is not None
+
+
+def test_url_haus():
+    urls = url_haus.search("fbe51695e97a45dc61967dc3241a37dc")
+
+    assert urls is not None
+
+
+def test_virus_bay():
+    urls = virus_bay.search("9fbdc5eca123e81571e8966b9b4e4a1e")
 
     assert urls is not None
 
