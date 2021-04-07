@@ -1,7 +1,9 @@
 # Standard Python Libraries
 from configparser import ConfigParser
-import logging
 import os
+
+# 3rd Party Python Libraries
+from termcolor import colored
 
 CONFIG_FILE = os.path.join("./", "config.ini")
 
@@ -13,8 +15,8 @@ def load_config():
             config.read(CONFIG_FILE)
         except Exception as e:
             config = None
-            logging.error(f"Unable to load config file: {e}")
+            print(colored(f"Unable to load config file: {e}", "red"))
     else:
-        logging.warning(f"Config file does not exist please modify config.ini.example with your information to get the full benefits of the application")
+        print(colored(f"Config file does not exist please modify config.ini.example with your information to get the full benefits of the application", "red"))
     
     return config
